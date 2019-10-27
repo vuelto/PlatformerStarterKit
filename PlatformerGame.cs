@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -122,9 +123,8 @@ namespace PlatformerStarterKit {
             // Loop here so we can try again when we can't find a level.
             while (true) {
                 // Try to find the next level. They are sequentially numbered txt files.
-                levelPath = String.Format("Levels/{0}.txt", ++levelIndex);
-                // levelPath = Path.Combine(StorageContainer.TitleLocation, "Content/" + levelPath);
-                levelPath = Path.Combine("/home/ben/src/snek/Content/", levelPath);
+                levelPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                levelPath = Path.Combine(levelPath, string.Format("Content/Levels/{0}.txt", ++levelIndex));
                 if (File.Exists(levelPath))
                     break;
 

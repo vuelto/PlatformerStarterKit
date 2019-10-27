@@ -258,11 +258,11 @@ namespace PlatformerStarterKit {
         }
 
         public static IEnemy CreateEnemy1(Level level, Vector2 position, string spriteSet){
-            return new Enemy(level, position, spriteSet);
+            return new Beserker(level, position, spriteSet);
         } 
         
         public static IEnemy CreateEnemy2(Level level, Vector2 position, string spriteSet){
-            return new Enemy2(level, position, spriteSet);
+            return new Guard(level, position, spriteSet);
         } 
 
         private Dictionary<string, Func<Level, Vector2, string, IEnemy>> enemyTypes = new Dictionary<string, Func<Level, Vector2, string, IEnemy>>{

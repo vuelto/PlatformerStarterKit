@@ -5,9 +5,9 @@ using Microsoft.Xna.Framework.Graphics;
 namespace PlatformerStarterKit {
 
     /// <summary>
-    /// A monster who is impeding the progress of our fearless adventurer.
+    /// the guard patrols her area at a somewhat random pace
     /// </summary>
-    public class Enemy2 : IEnemy
+    public class Guard : IEnemy
     {
         private Level _level;
         public Level Level
@@ -62,16 +62,12 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// The speed at which this enemy moves along the X axis.
         /// </summary>
-#if ZUNE
-        private const float MoveSpeed = 64.0f;
-#else
-        private const float MoveSpeed = 132.0f;
-#endif
+        private float MoveSpeed = 132.0f;
 
         /// <summary>
         /// Constructs a new Enemy.
         /// </summary>
-        public Enemy2(Level level, Vector2 position, string spriteSet)
+        public Guard(Level level, Vector2 position, string spriteSet)
         {
             _level = level;
             this.position = position;
@@ -119,6 +115,17 @@ namespace PlatformerStarterKit {
                 {
                     // Then turn around.
                     direction = (FaceDirection)(-(int)direction);
+
+                    // and maybe change movement speed
+                    var rand = new Random();
+                    var coin = rand.Next(-9999, 9999);
+                    if (coin < 0 && coin < -8000)
+                    {
+                        MoveSpeed = MoveSpeed - 1.25f;
+                    }
+                    else if (coin > 0 && coin > 8000){
+                        MoveSpeed = MoveSpeed + 1.25f;
+                    }
                 }
             }
             else

@@ -15,7 +15,7 @@ namespace PlatformerStarterKit {
     /// <summary>
     /// A monster who is impeding the progress of our fearless adventurer.
     /// </summary>
-    public class Enemy : IEnemy
+    public class Beserker : IEnemy
     {
         private Level _level;
         public Level Level
@@ -103,7 +103,7 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Constructs a new Enemy.
         /// </summary>
-        public Enemy(Level level, Vector2 position, string spriteSet)
+        public Beserker(Level level, Vector2 position, string spriteSet)
         {
             _level = level;
             this.position = position;
@@ -288,10 +288,10 @@ namespace PlatformerStarterKit {
         /// Otherwise, the existing Y velocity.
         /// </returns>
         private float DoJump (float velocityY, GameTime gameTime) {
+            // jump randomly
             if (!isJumping){
                 var rand = new Random();
                 isJumping = rand.Next(0, 99) > 89;
-                Console.WriteLine("jumping: " + isJumping);
             }
 
             // If the player wants to jump
