@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace PlatformerGame {
+namespace PlatformerStarterKit {
     /// <summary>
     /// A set of helpful methods for working with rectangles.
     /// </summary>

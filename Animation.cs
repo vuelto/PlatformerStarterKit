@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PlatformerGame {
+namespace PlatformerStarterKit {
     /// <summary>
     /// Represents an animated texture.
     /// </summary>

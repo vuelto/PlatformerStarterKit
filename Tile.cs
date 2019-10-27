@@ -2,7 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PlatformerGame {
+namespace PlatformerStarterKit {
     /// <summary>
     /// Controls the collision detection and response behavior of a tile.
     /// </summary>

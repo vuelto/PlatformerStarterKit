@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using System.IO;
 
-namespace PlatformerGame {
+namespace PlatformerStarterKit {
     /// <summary>
     /// A uniform grid of tiles with collections of gems and enemies.
     /// The level owns the player and controls the game's win and lose

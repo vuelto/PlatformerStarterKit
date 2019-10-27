@@ -2,7 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PlatformerGame {
+namespace PlatformerStarterKit {
 
     /// <summary>
     /// A monster who is impeding the progress of our fearless adventurer.

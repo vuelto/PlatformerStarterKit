@@ -5,11 +5,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace PlatformerGame {
+namespace PlatformerStarterKit {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class PlatformerStarterKit : Microsoft.Xna.Framework.Game {
+    public class PlatformerGame : Microsoft.Xna.Framework.Game {
         // Resources for drawing.
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -41,7 +41,7 @@ namespace PlatformerGame {
         private const Buttons ContinueButton = Buttons.A;
 #endif
 
-        public PlatformerStarterKit () {
+        public PlatformerGame () {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;

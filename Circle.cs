@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace PlatformerGame {
+namespace PlatformerStarterKit {
     /// <summary>
     /// Represents a 2D circle.
     /// </summary>

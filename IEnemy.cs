@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PlatformerGame {
+namespace PlatformerStarterKit {
     public interface IEnemy
     {
         Level Level { get; }
