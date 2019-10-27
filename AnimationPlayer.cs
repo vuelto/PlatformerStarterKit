@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PlatformerStarterKit {
+namespace PlatformerGame {
     /// <summary>
     /// Controls playback of an Animation.
     /// </summary>

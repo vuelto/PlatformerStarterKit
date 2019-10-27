@@ -3,14 +3,13 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Media;
 
-namespace PlatformerStarterKit {
+namespace PlatformerGame {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class PlatformerGame : Microsoft.Xna.Framework.Game {
+    public class PlatformerStarterKit : Microsoft.Xna.Framework.Game {
         // Resources for drawing.
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -42,7 +41,7 @@ namespace PlatformerStarterKit {
         private const Buttons ContinueButton = Buttons.A;
 #endif
 
-        public PlatformerGame () {
+        public PlatformerStarterKit () {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;
@@ -124,7 +123,8 @@ namespace PlatformerStarterKit {
             while (true) {
                 // Try to find the next level. They are sequentially numbered txt files.
                 levelPath = String.Format("Levels/{0}.txt", ++levelIndex);
-                levelPath = Path.Combine(StorageContainer.TitleLocation, "Content/" + levelPath);
+                // levelPath = Path.Combine(StorageContainer.TitleLocation, "Content/" + levelPath);
+                levelPath = Path.Combine("/home/ben/src/snek/Content/", levelPath);
                 if (File.Exists(levelPath))
                     break;
 

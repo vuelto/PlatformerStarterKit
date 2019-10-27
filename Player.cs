@@ -4,11 +4,11 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace PlatformerStarterKit {
+namespace PlatformerGame {
     /// <summary>
     /// Our fearless adventurer!
     /// </summary>
-    class Player {
+    public class Player {
         // Animations
         private Animation idleAnimation;
         private Animation runAnimation;
@@ -277,8 +277,8 @@ namespace PlatformerStarterKit {
             if (isJumping) {
                 // Begin or continue a jump
                 if ((!wasJumping && IsOnGround) || jumpTime > 0.0f) {
-                    if (jumpTime == 0.0f)
-                        jumpSound.Play();
+                    // if (jumpTime == 0.0f)
+                    //     jumpSound.Play();
 
                     jumpTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     sprite.PlayAnimation(jumpAnimation);
@@ -369,7 +369,7 @@ namespace PlatformerStarterKit {
         /// The enemy who killed the player. This parameter is null if the player was
         /// not killed by an enemy (fell into a hole).
         /// </param>
-        public void OnKilled (Enemy killedBy) {
+        public void OnKilled (IEnemy killedBy) {
             isAlive = false;
 
             if (killedBy != null)

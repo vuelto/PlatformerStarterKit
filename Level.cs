@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -6,13 +6,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using System.IO;
 
-namespace PlatformerStarterKit {
+namespace PlatformerGame {
     /// <summary>
     /// A uniform grid of tiles with collections of gems and enemies.
     /// The level owns the player and controls the game's win and lose
     /// conditions as well as scoring.
     /// </summary>
-    class Level : IDisposable {
+    public class Level : IDisposable {
         // Physical structure of the level.
         private Tile[,] tiles;
         private Texture2D[] layers;
@@ -26,7 +26,7 @@ namespace PlatformerStarterKit {
         Player player;
 
         private List<Gem> gems = new List<Gem>();
-        private List<Enemy> enemies = new List<Enemy>();
+        private List<IEnemy> enemies = new List<IEnemy>();
 
         // Key locations in the level.        
         private Vector2 start;
@@ -257,12 +257,27 @@ namespace PlatformerStarterKit {
             return LoadTile("Exit", TileCollision.Passable);
         }
 
+        public static IEnemy CreateEnemy1(Level level, Vector2 position, string spriteSet){
+            return new Enemy(level, position, spriteSet);
+        } 
+        
+        public static IEnemy CreateEnemy2(Level level, Vector2 position, string spriteSet){
+            return new Enemy2(level, position, spriteSet);
+        } 
+
+        private Dictionary<string, Func<Level, Vector2, string, IEnemy>> enemyTypes = new Dictionary<string, Func<Level, Vector2, string, IEnemy>>{
+            ["MonsterA"] = CreateEnemy1, 
+            ["MonsterB"] = CreateEnemy2, 
+            ["MonsterC"] = CreateEnemy1, 
+            ["MonsterD"] = CreateEnemy2 
+        };
+
         /// <summary>
         /// Instantiates an enemy and puts him in the level.
         /// </summary>
         private Tile LoadEnemyTile (int x, int y, string spriteSet) {
             Vector2 position = RectangleExtensions.GetBottomCenter(GetBounds(x, y));
-            enemies.Add(new Enemy(this, position, spriteSet));
+            enemies.Add(enemyTypes[spriteSet](this, position, spriteSet));
 
             return new Tile(null, TileCollision.Passable);
         }
@@ -393,7 +408,7 @@ namespace PlatformerStarterKit {
         /// Animates each enemy and allow them to kill the player.
         /// </summary>
         private void UpdateEnemies (GameTime gameTime) {
-            foreach (Enemy enemy in enemies) {
+            foreach (IEnemy enemy in enemies) {
                 enemy.Update(gameTime);
 
                 // Touching an enemy instantly kills the player
@@ -421,7 +436,7 @@ namespace PlatformerStarterKit {
         /// The enemy who killed the player. This is null if the player was not killed by an
         /// enemy, such as when a player falls into a hole.
         /// </param>
-        private void OnPlayerKilled (Enemy killedBy) {
+        private void OnPlayerKilled (IEnemy killedBy) {
             Player.OnKilled(killedBy);
         }
 
@@ -459,7 +474,7 @@ namespace PlatformerStarterKit {
 
             Player.Draw(gameTime, spriteBatch);
 
-            foreach (Enemy enemy in enemies)
+            foreach (IEnemy enemy in enemies)
                 enemy.Draw(gameTime, spriteBatch);
 
             for (int i = EntityLayer + 1; i < layers.Length; ++i)
