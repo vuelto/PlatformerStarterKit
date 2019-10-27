@@ -354,6 +354,9 @@ namespace PlatformerStarterKit {
             if (!Player.IsAlive || TimeRemaining == TimeSpan.Zero) {
                 // Still want to perform physics on the player.
                 Player.ApplyPhysics(gameTime);
+                if (!ReachedExit){
+                    UpdateEnemies(gameTime); // keep enemies moving so we can respawn
+                }
             } else if (ReachedExit) {
                 // Animate the time being converted into points.
                 int seconds = (int)Math.Round(gameTime.ElapsedGameTime.TotalSeconds * 100.0f);
@@ -410,9 +413,9 @@ namespace PlatformerStarterKit {
         private void UpdateEnemies (GameTime gameTime) {
             foreach (IEnemy enemy in enemies) {
                 enemy.Update(gameTime);
-
+                
                 // Touching an enemy instantly kills the player
-                if (enemy.BoundingRectangle.Intersects(Player.BoundingRectangle)) {
+                if (Player.IsAlive && enemy.BoundingRectangle.Intersects(Player.BoundingRectangle)) {
                     OnPlayerKilled(enemy);
                 }
             }

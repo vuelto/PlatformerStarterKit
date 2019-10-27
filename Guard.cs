@@ -151,8 +151,7 @@ namespace PlatformerStarterKit {
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             // Stop running when the game is paused or before turning around.
-            if (!Level.Player.IsAlive ||
-                Level.ReachedExit ||
+            if (Level.ReachedExit ||
                 Level.TimeRemaining == TimeSpan.Zero ||
                 waitTime > 0)
             {
