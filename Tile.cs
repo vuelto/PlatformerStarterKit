@@ -2,11 +2,13 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PlatformerStarterKit {
+namespace PlatformerStarterKit
+{
     /// <summary>
     /// Controls the collision detection and response behavior of a tile.
     /// </summary>
-    public enum TileCollision {
+    public enum TileCollision
+    {
         /// <summary>
         /// A passable tile is one which does not hinder player motion at all.
         /// </summary>
@@ -29,7 +31,8 @@ namespace PlatformerStarterKit {
     /// <summary>
     /// Stores the appearance and collision behavior of a tile.
     /// </summary>
-    struct Tile {
+    public struct Tile
+    {
         public Texture2D Texture;
         public TileCollision Collision;
 
@@ -45,7 +48,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Constructs a new tile.
         /// </summary>
-        public Tile (Texture2D texture, TileCollision collision) {
+        public Tile(Texture2D texture, TileCollision collision)
+        {
             Texture = texture;
             Collision = collision;
         }

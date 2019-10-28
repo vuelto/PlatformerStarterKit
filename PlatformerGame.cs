@@ -6,11 +6,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace PlatformerStarterKit {
+namespace PlatformerStarterKit
+{
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class PlatformerGame : Microsoft.Xna.Framework.Game {
+    public class PlatformerGame : Microsoft.Xna.Framework.Game
+    {
         // Resources for drawing.
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -42,7 +44,8 @@ namespace PlatformerStarterKit {
         private const Buttons ContinueButton = Buttons.A;
 #endif
 
-        public PlatformerGame () {
+        public PlatformerGame()
+        {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;
@@ -57,7 +60,8 @@ namespace PlatformerStarterKit {
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent () {
+        protected override void LoadContent()
+        {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -80,7 +84,8 @@ namespace PlatformerStarterKit {
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update (GameTime gameTime) {
+        protected override void Update(GameTime gameTime)
+        {
             HandleInput();
 
             level.Update(gameTime);
@@ -88,7 +93,8 @@ namespace PlatformerStarterKit {
             base.Update(gameTime);
         }
 
-        private void HandleInput () {
+        private void HandleInput()
+        {
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
 
@@ -102,10 +108,14 @@ namespace PlatformerStarterKit {
 
             // Perform the appropriate action to advance the game and
             // to get the player back to playing.
-            if (!wasContinuePressed && continuePressed) {
-                if (!level.Player.IsAlive) {
+            if (!wasContinuePressed && continuePressed)
+            {
+                if (!level.Player.IsAlive)
+                {
                     level.StartNewLife();
-                } else if (level.TimeRemaining == TimeSpan.Zero) {
+                }
+                else if (level.TimeRemaining == TimeSpan.Zero)
+                {
                     if (level.ReachedExit)
                         LoadNextLevel();
                     else
@@ -116,12 +126,14 @@ namespace PlatformerStarterKit {
             wasContinuePressed = continuePressed;
         }
 
-        private void LoadNextLevel () {
+        private void LoadNextLevel()
+        {
             // Find the path of the next level.
             string levelPath;
 
             // Loop here so we can try again when we can't find a level.
-            while (true) {
+            while (true)
+            {
                 // Try to find the next level. They are sequentially numbered txt files.
                 levelPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 levelPath = Path.Combine(levelPath, string.Format("Content/Levels/{0}.txt", ++levelIndex));
@@ -144,7 +156,8 @@ namespace PlatformerStarterKit {
             level = new Level(Services, levelPath);
         }
 
-        private void ReloadCurrentLevel () {
+        private void ReloadCurrentLevel()
+        {
             --levelIndex;
             LoadNextLevel();
         }
@@ -153,7 +166,8 @@ namespace PlatformerStarterKit {
         /// Draws the game from background to foreground.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw (GameTime gameTime) {
+        protected override void Draw(GameTime gameTime)
+        {
             graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
@@ -167,7 +181,8 @@ namespace PlatformerStarterKit {
             base.Draw(gameTime);
         }
 
-        private void DrawHud () {
+        private void DrawHud()
+        {
             Rectangle titleSafeArea = GraphicsDevice.Viewport.TitleSafeArea;
             Vector2 hudLocation = new Vector2(titleSafeArea.X, titleSafeArea.Y);
             Vector2 center = new Vector2(titleSafeArea.X + titleSafeArea.Width / 2.0f,
@@ -179,9 +194,12 @@ namespace PlatformerStarterKit {
             Color timeColor;
             if (level.TimeRemaining > WarningTime ||
                 level.ReachedExit ||
-                (int)level.TimeRemaining.TotalSeconds % 2 == 0) {
+                (int)level.TimeRemaining.TotalSeconds % 2 == 0)
+            {
                 timeColor = Color.Yellow;
-            } else {
+            }
+            else
+            {
                 timeColor = Color.Red;
             }
             DrawShadowedString(hudFont, timeString, hudLocation, timeColor);
@@ -192,24 +210,32 @@ namespace PlatformerStarterKit {
 
             // Determine the status overlay message to show.
             Texture2D status = null;
-            if (level.TimeRemaining == TimeSpan.Zero) {
-                if (level.ReachedExit) {
+            if (level.TimeRemaining == TimeSpan.Zero)
+            {
+                if (level.ReachedExit)
+                {
                     status = winOverlay;
-                } else {
+                }
+                else
+                {
                     status = loseOverlay;
                 }
-            } else if (!level.Player.IsAlive) {
+            }
+            else if (!level.Player.IsAlive)
+            {
                 status = diedOverlay;
             }
 
-            if (status != null) {
+            if (status != null)
+            {
                 // Draw status message.
                 Vector2 statusSize = new Vector2(status.Width, status.Height);
                 spriteBatch.Draw(status, center - statusSize / 2, Color.White);
             }
         }
 
-        private void DrawShadowedString (SpriteFont font, string value, Vector2 position, Color color) {
+        private void DrawShadowedString(SpriteFont font, string value, Vector2 position, Color color)
+        {
             spriteBatch.DrawString(font, value, position + new Vector2(1.0f, 1.0f), Color.Black);
             spriteBatch.DrawString(font, value, position, color);
         }

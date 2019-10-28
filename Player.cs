@@ -4,11 +4,13 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace PlatformerStarterKit {
+namespace PlatformerStarterKit
+{
     /// <summary>
     /// Our fearless adventurer!
     /// </summary>
-    public class Player {
+    public class Player
+    {
         // Animations
         private Animation idleAnimation;
         private Animation runAnimation;
@@ -16,25 +18,28 @@ namespace PlatformerStarterKit {
         private Animation celebrateAnimation;
         private Animation dieAnimation;
         private SpriteEffects flip = SpriteEffects.None;
-        private AnimationPlayer sprite;
+        private AnimationPlayer sprite = new AnimationPlayer();
 
         // Sounds
         private SoundEffect killedSound;
         private SoundEffect jumpSound;
         private SoundEffect fallSound;
 
-        public Level Level {
+        public Level Level
+        {
             get { return level; }
         }
         Level level;
 
-        public bool IsAlive {
+        public bool IsAlive
+        {
             get { return isAlive; }
         }
         bool isAlive;
 
         // Physics state
-        public Vector2 Position {
+        public Vector2 Position
+        {
             get { return position; }
             set { position = value; }
         }
@@ -42,7 +47,8 @@ namespace PlatformerStarterKit {
 
         private float previousBottom;
 
-        public Vector2 Velocity {
+        public Vector2 Velocity
+        {
             get { return velocity; }
             set { velocity = value; }
         }
@@ -87,7 +93,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Gets whether or not the player's feet are on the ground.
         /// </summary>
-        public bool IsOnGround {
+        public bool IsOnGround
+        {
             get { return isOnGround; }
         }
         bool isOnGround;
@@ -106,8 +113,10 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Gets a rectangle which bounds this player in world space.
         /// </summary>
-        public Rectangle BoundingRectangle {
-            get {
+        public Rectangle BoundingRectangle
+        {
+            get
+            {
                 int left = (int)Math.Round(Position.X - sprite.Origin.X) + localBounds.X;
                 int top = (int)Math.Round(Position.Y - sprite.Origin.Y) + localBounds.Y;
 
@@ -118,7 +127,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Constructors a new player.
         /// </summary>
-        public Player (Level level, Vector2 position) {
+        public Player(Level level, Vector2 position)
+        {
             this.level = level;
 
             LoadContent();
@@ -129,7 +139,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Loads the player sprite sheet and sounds.
         /// </summary>
-        public void LoadContent () {
+        public void LoadContent()
+        {
             // Load animated textures.
             idleAnimation = new Animation(Level.Content.Load<Texture2D>("Sprites/Player/Idle"), 0.1f, true);
             runAnimation = new Animation(Level.Content.Load<Texture2D>("Sprites/Player/Run"), 0.1f, true);
@@ -154,7 +165,8 @@ namespace PlatformerStarterKit {
         /// Resets the player to life.
         /// </summary>
         /// <param name="position">The position to come to life at.</param>
-        public void Reset (Vector2 position) {
+        public void Reset(Vector2 position)
+        {
             Position = position;
             Velocity = Vector2.Zero;
             isAlive = true;
@@ -164,15 +176,20 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Handles input, performs physics, and animates the player sprite.
         /// </summary>
-        public void Update (GameTime gameTime) {
+        public void Update(GameTime gameTime)
+        {
             GetInput();
 
             ApplyPhysics(gameTime);
 
-            if (IsAlive && IsOnGround) {
-                if (Math.Abs(Velocity.X) - 0.02f > 0) {
+            if (IsAlive && IsOnGround)
+            {
+                if (Math.Abs(Velocity.X) - 0.02f > 0)
+                {
                     sprite.PlayAnimation(runAnimation);
-                } else {
+                }
+                else
+                {
                     sprite.PlayAnimation(idleAnimation);
                 }
             }
@@ -185,7 +202,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Gets player horizontal movement and jump commands from input.
         /// </summary>
-        private void GetInput () {
+        private void GetInput()
+        {
             // Get input state.
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             KeyboardState keyboardState = Keyboard.GetState();
@@ -200,11 +218,14 @@ namespace PlatformerStarterKit {
             // If any digital horizontal movement input is found, override the analog movement.
             if (gamePadState.IsButtonDown(Buttons.DPadLeft) ||
                 keyboardState.IsKeyDown(Keys.Left) ||
-                keyboardState.IsKeyDown(Keys.A)) {
+                keyboardState.IsKeyDown(Keys.A))
+            {
                 movement = -1.0f;
-            } else if (gamePadState.IsButtonDown(Buttons.DPadRight) ||
-                     keyboardState.IsKeyDown(Keys.Right) ||
-                     keyboardState.IsKeyDown(Keys.D)) {
+            }
+            else if (gamePadState.IsButtonDown(Buttons.DPadRight) ||
+                   keyboardState.IsKeyDown(Keys.Right) ||
+                   keyboardState.IsKeyDown(Keys.D))
+            {
                 movement = 1.0f;
             }
 
@@ -219,7 +240,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Updates the player's velocity and position based on input, gravity, etc.
         /// </summary>
-        public void ApplyPhysics (GameTime gameTime) {
+        public void ApplyPhysics(GameTime gameTime)
+        {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             Vector2 previousPosition = Position;
@@ -272,11 +294,14 @@ namespace PlatformerStarterKit {
         /// A new Y velocity if beginning or continuing a jump.
         /// Otherwise, the existing Y velocity.
         /// </returns>
-        private float DoJump (float velocityY, GameTime gameTime) {
+        private float DoJump(float velocityY, GameTime gameTime)
+        {
             // If the player wants to jump
-            if (isJumping) {
+            if (isJumping)
+            {
                 // Begin or continue a jump
-                if ((!wasJumping && IsOnGround) || jumpTime > 0.0f) {
+                if ((!wasJumping && IsOnGround) || jumpTime > 0.0f)
+                {
                     // if (jumpTime == 0.0f)
                     //     jumpSound.Play();
 
@@ -285,14 +310,19 @@ namespace PlatformerStarterKit {
                 }
 
                 // If we are in the ascent of the jump
-                if (0.0f < jumpTime && jumpTime <= MaxJumpTime) {
+                if (0.0f < jumpTime && jumpTime <= MaxJumpTime)
+                {
                     // Fully override the vertical velocity with a power curve that gives players more control over the top of the jump
                     velocityY = JumpLaunchVelocity * (1.0f - (float)Math.Pow(jumpTime / MaxJumpTime, JumpControlPower));
-                } else {
+                }
+                else
+                {
                     // Reached the apex of the jump
                     jumpTime = 0.0f;
                 }
-            } else {
+            }
+            else
+            {
                 // Continues not jumping or cancels a jump in progress
                 jumpTime = 0.0f;
             }
@@ -307,7 +337,8 @@ namespace PlatformerStarterKit {
         /// axis to prevent overlapping. There is some special logic for the Y axis to
         /// handle platforms which behave differently depending on direction of movement.
         /// </summary>
-        private void HandleCollisions () {
+        private void HandleCollisions()
+        {
             // Get the player's bounding rectangle and find neighboring tiles.
             Rectangle bounds = BoundingRectangle;
             int leftTile = (int)Math.Floor((float)bounds.Left / Tile.Width);
@@ -319,33 +350,40 @@ namespace PlatformerStarterKit {
             isOnGround = false;
 
             // For each potentially colliding tile,
-            for (int y = topTile; y <= bottomTile; ++y) {
-                for (int x = leftTile; x <= rightTile; ++x) {
+            for (int y = topTile; y <= bottomTile; ++y)
+            {
+                for (int x = leftTile; x <= rightTile; ++x)
+                {
                     // If this tile is collidable,
                     TileCollision collision = Level.GetCollision(x, y);
-                    if (collision != TileCollision.Passable) {
+                    if (collision != TileCollision.Passable)
+                    {
                         // Determine collision depth (with direction) and magnitude.
                         Rectangle tileBounds = Level.GetBounds(x, y);
                         Vector2 depth = RectangleExtensions.GetIntersectionDepth(bounds, tileBounds);
-                        if (depth != Vector2.Zero) {
+                        if (depth != Vector2.Zero)
+                        {
                             float absDepthX = Math.Abs(depth.X);
                             float absDepthY = Math.Abs(depth.Y);
 
                             // Resolve the collision along the shallow axis.
-                            if (absDepthY < absDepthX || collision == TileCollision.Platform) {
+                            if (absDepthY < absDepthX || collision == TileCollision.Platform)
+                            {
                                 // If we crossed the top of a tile, we are on the ground.
                                 if (previousBottom <= tileBounds.Top)
                                     isOnGround = true;
 
                                 // Ignore platforms, unless we are on the ground.
-                                if (collision == TileCollision.Impassable || IsOnGround) {
+                                if (collision == TileCollision.Impassable || IsOnGround)
+                                {
                                     // Resolve the collision along the Y axis.
                                     Position = new Vector2(Position.X, Position.Y + depth.Y);
 
                                     // Perform further collisions with the new bounds.
                                     bounds = BoundingRectangle;
                                 }
-                            } else if (collision == TileCollision.Impassable) // Ignore platforms.
+                            }
+                            else if (collision == TileCollision.Impassable) // Ignore platforms.
                             {
                                 // Resolve the collision along the X axis.
                                 Position = new Vector2(Position.X + depth.X, Position.Y);
@@ -369,7 +407,8 @@ namespace PlatformerStarterKit {
         /// The enemy who killed the player. This parameter is null if the player was
         /// not killed by an enemy (fell into a hole).
         /// </param>
-        public void OnKilled (IEnemy killedBy) {
+        public void OnKilled(IEnemy killedBy)
+        {
             isAlive = false;
 
             if (killedBy != null)
@@ -383,14 +422,16 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Called when this player reaches the level's exit.
         /// </summary>
-        public void OnReachedExit () {
+        public void OnReachedExit()
+        {
             sprite.PlayAnimation(celebrateAnimation);
         }
 
         /// <summary>
         /// Draws the animated player.
         /// </summary>
-        public void Draw (GameTime gameTime, SpriteBatch spriteBatch) {
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
             // Flip the sprite to face the way we are moving.
             if (Velocity.X > 0)
                 flip = SpriteEffects.FlipHorizontally;

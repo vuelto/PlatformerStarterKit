@@ -6,13 +6,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using System.IO;
 
-namespace PlatformerStarterKit {
+namespace PlatformerStarterKit
+{
     /// <summary>
     /// A uniform grid of tiles with collections of gems and enemies.
     /// The level owns the player and controls the game's win and lose
     /// conditions as well as scoring.
     /// </summary>
-    public class Level : IDisposable {
+    public class Level : IDisposable
+    {
         // Physical structure of the level.
         private Tile[,] tiles;
         private Texture2D[] layers;
@@ -20,7 +22,8 @@ namespace PlatformerStarterKit {
         private const int EntityLayer = 2;
 
         // Entities in the level.
-        public Player Player {
+        public Player Player
+        {
             get { return player; }
         }
         Player player;
@@ -36,17 +39,20 @@ namespace PlatformerStarterKit {
         // Level game state.
         private Random random = new Random(354668); // Arbitrary, but constant seed
 
-        public int Score {
+        public int Score
+        {
             get { return score; }
         }
         int score;
 
-        public bool ReachedExit {
+        public bool ReachedExit
+        {
             get { return reachedExit; }
         }
         bool reachedExit;
 
-        public TimeSpan TimeRemaining {
+        public TimeSpan TimeRemaining
+        {
             get { return timeRemaining; }
         }
         TimeSpan timeRemaining;
@@ -54,7 +60,8 @@ namespace PlatformerStarterKit {
         private const int PointsPerSecond = 5;
 
         // Level content.        
-        public ContentManager Content {
+        public ContentManager Content
+        {
             get { return content; }
         }
         ContentManager content;
@@ -72,7 +79,8 @@ namespace PlatformerStarterKit {
         /// <param name="path">
         /// The absolute path to the level file to be loaded.
         /// </param>
-        public Level (IServiceProvider serviceProvider, string path) {
+        public Level(IServiceProvider serviceProvider, string path)
+        {
             // Create a new content manager to load content used just by this level.
             content = new ContentManager(serviceProvider, "Content");
 
@@ -83,7 +91,8 @@ namespace PlatformerStarterKit {
             // Load background layer textures. For now, all levels must
             // use the same backgrounds and only use the left-most part of them.
             layers = new Texture2D[3];
-            for (int i = 0; i < layers.Length; ++i) {
+            for (int i = 0; i < layers.Length; ++i)
+            {
                 // Choose a random segment if each background layer for level variety.
                 int segmentIndex = random.Next(3);
                 layers[i] = Content.Load<Texture2D>("Backgrounds/Layer" + i + "_" + segmentIndex);
@@ -101,14 +110,17 @@ namespace PlatformerStarterKit {
         /// <param name="path">
         /// The absolute path to the level file to be loaded.
         /// </param>
-        private void LoadTiles (string path) {
+        private void LoadTiles(string path)
+        {
             // Load the level and ensure all of the lines are the same length.
             int width;
             List<string> lines = new List<string>();
-            using (StreamReader reader = new StreamReader(path)) {
+            using (StreamReader reader = new StreamReader(path))
+            {
                 string line = reader.ReadLine();
                 width = line.Length;
-                while (line != null) {
+                while (line != null)
+                {
                     lines.Add(line);
                     if (line.Length != width)
                         throw new Exception(String.Format("The length of line {0} is different from all preceeding lines.", lines.Count));
@@ -120,8 +132,10 @@ namespace PlatformerStarterKit {
             tiles = new Tile[width, lines.Count];
 
             // Loop over every tile position,
-            for (int y = 0; y < Height; ++y) {
-                for (int x = 0; x < Width; ++x) {
+            for (int y = 0; y < Height; ++y)
+            {
+                for (int x = 0; x < Width; ++x)
+                {
                     // to load each tile.
                     char tileType = lines[y][x];
                     tiles[x, y] = LoadTile(tileType, x, y);
@@ -150,53 +164,55 @@ namespace PlatformerStarterKit {
         /// The Y location of this tile in tile space.
         /// </param>
         /// <returns>The loaded tile.</returns>
-        private Tile LoadTile (char tileType, int x, int y) {
-            switch (tileType) {
+        private Tile LoadTile(char tileType, int x, int y)
+        {
+            switch (tileType)
+            {
                 // Blank space
                 case '.':
-                return new Tile(null, TileCollision.Passable);
+                    return new Tile(null, TileCollision.Passable);
 
                 // Exit
                 case 'X':
-                return LoadExitTile(x, y);
+                    return LoadExitTile(x, y);
 
                 // Gem
                 case 'G':
-                return LoadGemTile(x, y);
+                    return LoadGemTile(x, y);
 
                 // Floating platform
                 case '-':
-                return LoadTile("Platform", TileCollision.Platform);
+                    return LoadTile("Platform", TileCollision.Platform);
 
                 // Various enemies
                 case 'A':
-                return LoadEnemyTile(x, y, "MonsterA");
+                    return LoadEnemyTile(x, y, "MonsterA");
                 case 'B':
-                return LoadEnemyTile(x, y, "MonsterB");
+                    return LoadEnemyTile(x, y, "MonsterB");
                 case 'C':
-                return LoadEnemyTile(x, y, "MonsterC");
+                    return LoadEnemyTile(x, y, "MonsterC");
                 case 'D':
-                return LoadEnemyTile(x, y, "MonsterD");
+                    return LoadEnemyTile(x, y, "MonsterD");
 
                 // Platform block
                 case '~':
-                return LoadVarietyTile("BlockB", 2, TileCollision.Platform);
+                    return LoadVarietyTile("BlockB", 2, TileCollision.Platform);
 
                 // Passable block
                 case ':':
-                return LoadVarietyTile("BlockB", 2, TileCollision.Passable);
+                    return LoadVarietyTile("BlockB", 2, TileCollision.Passable);
 
                 // Player 1 start point
                 case '1':
-                return LoadStartTile(x, y);
+                    return LoadStartTile(x, y);
 
                 // Impassable block
                 case '#':
-                return LoadVarietyTile("BlockA", 7, TileCollision.Impassable);
+                    return LoadVarietyTile("BlockA", 7, TileCollision.Impassable);
 
                 // Unknown tile type character
                 default:
-                throw new NotSupportedException(String.Format("Unsupported tile type character '{0}' at position {1}, {2}.", tileType, x, y));
+                    throw new NotSupportedException(String.Format("Unsupported tile type character '{0}' at position {1}, {2}.", tileType, x, y));
             }
         }
 
@@ -211,7 +227,8 @@ namespace PlatformerStarterKit {
         /// The tile collision type for the new tile.
         /// </param>
         /// <returns>The new tile.</returns>
-        private Tile LoadTile (string name, TileCollision collision) {
+        private Tile LoadTile(string name, TileCollision collision)
+        {
             return new Tile(Content.Load<Texture2D>("Tiles/" + name), collision);
         }
 
@@ -226,7 +243,8 @@ namespace PlatformerStarterKit {
         /// <param name="variationCount">
         /// The number of variations in this group.
         /// </param>
-        private Tile LoadVarietyTile (string baseName, int variationCount, TileCollision collision) {
+        private Tile LoadVarietyTile(string baseName, int variationCount, TileCollision collision)
+        {
             int index = random.Next(variationCount);
             return LoadTile(baseName + index, collision);
         }
@@ -235,7 +253,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Instantiates a player, puts him in the level, and remembers where to put him when he is resurrected.
         /// </summary>
-        private Tile LoadStartTile (int x, int y) {
+        private Tile LoadStartTile(int x, int y)
+        {
             if (Player != null)
                 throw new NotSupportedException("A level may only have one starting point.");
 
@@ -248,7 +267,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Remembers the location of the level's exit.
         /// </summary>
-        private Tile LoadExitTile (int x, int y) {
+        private Tile LoadExitTile(int x, int y)
+        {
             if (exit != InvalidPosition)
                 throw new NotSupportedException("A level may only have one exit.");
 
@@ -257,25 +277,34 @@ namespace PlatformerStarterKit {
             return LoadTile("Exit", TileCollision.Passable);
         }
 
-        public static IEnemy CreateEnemy1(Level level, Vector2 position, string spriteSet){
-            return new Beserker(level, position, spriteSet);
-        } 
-        
-        public static IEnemy CreateEnemy2(Level level, Vector2 position, string spriteSet){
-            return new Guard(level, position, spriteSet);
-        } 
+        public static IEnemy CreateBeserker(Level level, Vector2 position, string spriteSet)
+        {
+            return new Beserker(level, position, "Sprites/" + spriteSet + "/");
+        }
 
-        private Dictionary<string, Func<Level, Vector2, string, IEnemy>> enemyTypes = new Dictionary<string, Func<Level, Vector2, string, IEnemy>>{
-            ["MonsterA"] = CreateEnemy1, 
-            ["MonsterB"] = CreateEnemy2, 
-            ["MonsterC"] = CreateEnemy1, 
-            ["MonsterD"] = CreateEnemy2 
+        public static IEnemy CreateGuard(Level level, Vector2 position, string spriteSet)
+        {
+            return new Guard(level, position, "Sprites/" + spriteSet + "/");
+        }
+        
+        public static IEnemy CreateStalker(Level level, Vector2 position, string spriteSet)
+        {
+            return new Stalker(level, position, "Sprites/" + spriteSet + "/");
+        }
+
+        private Dictionary<string, Func<Level, Vector2, string, IEnemy>> enemyTypes = new Dictionary<string, Func<Level, Vector2, string, IEnemy>>
+        {
+            ["MonsterA"] = CreateBeserker,
+            ["MonsterB"] = CreateGuard,
+            ["MonsterC"] = CreateStalker,
+            ["MonsterD"] = CreateGuard
         };
 
         /// <summary>
         /// Instantiates an enemy and puts him in the level.
         /// </summary>
-        private Tile LoadEnemyTile (int x, int y, string spriteSet) {
+        private Tile LoadEnemyTile(int x, int y, string spriteSet)
+        {
             Vector2 position = RectangleExtensions.GetBottomCenter(GetBounds(x, y));
             enemies.Add(enemyTypes[spriteSet](this, position, spriteSet));
 
@@ -285,7 +314,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Instantiates a gem and puts it in the level.
         /// </summary>
-        private Tile LoadGemTile (int x, int y) {
+        private Tile LoadGemTile(int x, int y)
+        {
             Point position = GetBounds(x, y).Center;
             gems.Add(new Gem(this, new Vector2(position.X, position.Y)));
 
@@ -295,7 +325,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Unloads the level content.
         /// </summary>
-        public void Dispose () {
+        public void Dispose()
+        {
             Content.Unload();
         }
 
@@ -309,7 +340,8 @@ namespace PlatformerStarterKit {
         /// impossible to escape past the left or right edges, but allowing things
         /// to jump beyond the top of the level and fall off the bottom.
         /// </summary>
-        public TileCollision GetCollision (int x, int y) {
+        public TileCollision GetCollision(int x, int y)
+        {
             // Prevent escaping past the level ends.
             if (x < 0 || x >= Width)
                 return TileCollision.Impassable;
@@ -323,21 +355,24 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Gets the bounding rectangle of a tile in world space.
         /// </summary>        
-        public Rectangle GetBounds (int x, int y) {
+        public Rectangle GetBounds(int x, int y)
+        {
             return new Rectangle(x * Tile.Width, y * Tile.Height, Tile.Width, Tile.Height);
         }
 
         /// <summary>
         /// Width of level measured in tiles.
         /// </summary>
-        public int Width {
+        public int Width
+        {
             get { return tiles.GetLength(0); }
         }
 
         /// <summary>
         /// Height of the level measured in tiles.
         /// </summary>
-        public int Height {
+        public int Height
+        {
             get { return tiles.GetLength(1); }
         }
 
@@ -349,21 +384,28 @@ namespace PlatformerStarterKit {
         /// Updates all objects in the world, performs collision between them,
         /// and handles the time limit with scoring.
         /// </summary>
-        public void Update (GameTime gameTime) {
+        public void Update(GameTime gameTime)
+        {
             // Pause while the player is dead or time is expired.
-            if (!Player.IsAlive || TimeRemaining == TimeSpan.Zero) {
+            if (!Player.IsAlive || TimeRemaining == TimeSpan.Zero)
+            {
                 // Still want to perform physics on the player.
                 Player.ApplyPhysics(gameTime);
-                if (!ReachedExit){
+                if (!ReachedExit)
+                {
                     UpdateEnemies(gameTime); // keep enemies moving so we can respawn
                 }
-            } else if (ReachedExit) {
+            }
+            else if (ReachedExit)
+            {
                 // Animate the time being converted into points.
                 int seconds = (int)Math.Round(gameTime.ElapsedGameTime.TotalSeconds * 100.0f);
                 seconds = Math.Min(seconds, (int)Math.Ceiling(TimeRemaining.TotalSeconds));
                 timeRemaining -= TimeSpan.FromSeconds(seconds);
                 score += seconds * PointsPerSecond;
-            } else {
+            }
+            else
+            {
                 timeRemaining -= gameTime.ElapsedGameTime;
 
                 Player.Update(gameTime);
@@ -381,7 +423,8 @@ namespace PlatformerStarterKit {
                 // exit when they have collected all of the gems.
                 if (Player.IsAlive &&
                     Player.IsOnGround &&
-                    Player.BoundingRectangle.Contains(exit)) {
+                    Player.BoundingRectangle.Contains(exit))
+                {
                     OnExitReached();
                 }
             }
@@ -394,13 +437,16 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Animates each gem and checks to allows the player to collect them.
         /// </summary>
-        private void UpdateGems (GameTime gameTime) {
-            for (int i = 0; i < gems.Count; ++i) {
+        private void UpdateGems(GameTime gameTime)
+        {
+            for (int i = 0; i < gems.Count; ++i)
+            {
                 Gem gem = gems[i];
 
                 gem.Update(gameTime);
 
-                if (gem.BoundingCircle.Intersects(Player.BoundingRectangle)) {
+                if (gem.BoundingCircle.Intersects(Player.BoundingRectangle))
+                {
                     gems.RemoveAt(i--);
                     OnGemCollected(gem, Player);
                 }
@@ -410,12 +456,15 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Animates each enemy and allow them to kill the player.
         /// </summary>
-        private void UpdateEnemies (GameTime gameTime) {
-            foreach (IEnemy enemy in enemies) {
+        private void UpdateEnemies(GameTime gameTime)
+        {
+            foreach (IEnemy enemy in enemies)
+            {
                 enemy.Update(gameTime);
-                
+
                 // Touching an enemy instantly kills the player
-                if (Player.IsAlive && enemy.BoundingRectangle.Intersects(Player.BoundingRectangle)) {
+                if (Player.IsAlive && enemy.BoundingRectangle.Intersects(Player.BoundingRectangle))
+                {
                     OnPlayerKilled(enemy);
                 }
             }
@@ -426,7 +475,8 @@ namespace PlatformerStarterKit {
         /// </summary>
         /// <param name="gem">The gem that was collected.</param>
         /// <param name="collectedBy">The player who collected this gem.</param>
-        private void OnGemCollected (Gem gem, Player collectedBy) {
+        private void OnGemCollected(Gem gem, Player collectedBy)
+        {
             score += Gem.PointValue;
 
             gem.OnCollected(collectedBy);
@@ -439,14 +489,16 @@ namespace PlatformerStarterKit {
         /// The enemy who killed the player. This is null if the player was not killed by an
         /// enemy, such as when a player falls into a hole.
         /// </param>
-        private void OnPlayerKilled (IEnemy killedBy) {
+        private void OnPlayerKilled(IEnemy killedBy)
+        {
             Player.OnKilled(killedBy);
         }
 
         /// <summary>
         /// Called when the player reaches the level's exit.
         /// </summary>
-        private void OnExitReached () {
+        private void OnExitReached()
+        {
             Player.OnReachedExit();
             exitReachedSound.Play();
             reachedExit = true;
@@ -455,7 +507,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Restores the player to the starting point to try the level again.
         /// </summary>
-        public void StartNewLife () {
+        public void StartNewLife()
+        {
             Player.Reset(start);
         }
 
@@ -466,7 +519,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Draw everything in the level from background to foreground.
         /// </summary>
-        public void Draw (GameTime gameTime, SpriteBatch spriteBatch) {
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
             for (int i = 0; i <= EntityLayer; ++i)
                 spriteBatch.Draw(layers[i], Vector2.Zero, Color.White);
 
@@ -487,13 +541,17 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Draws each tile in the level.
         /// </summary>
-        private void DrawTiles (SpriteBatch spriteBatch) {
+        private void DrawTiles(SpriteBatch spriteBatch)
+        {
             // For each tile position
-            for (int y = 0; y < Height; ++y) {
-                for (int x = 0; x < Width; ++x) {
+            for (int y = 0; y < Height; ++y)
+            {
+                for (int x = 0; x < Width; ++x)
+                {
                     // If there is a visible tile in that position
                     Texture2D texture = tiles[x, y].Texture;
-                    if (texture != null) {
+                    if (texture != null)
+                    {
                         // Draw it in screen space.
                         Vector2 position = new Vector2(x, y) * Tile.Size;
                         spriteBatch.Draw(texture, position, Color.White);

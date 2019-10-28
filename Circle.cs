@@ -1,11 +1,13 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace PlatformerStarterKit {
+namespace PlatformerStarterKit
+{
     /// <summary>
     /// Represents a 2D circle.
     /// </summary>
-    struct Circle {
+    struct Circle
+    {
         /// <summary>
         /// Center position of the circle.
         /// </summary>
@@ -19,7 +21,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Constructs a new circle.
         /// </summary>
-        public Circle (Vector2 position, float radius) {
+        public Circle(Vector2 position, float radius)
+        {
             Center = position;
             Radius = radius;
         }
@@ -28,7 +31,8 @@ namespace PlatformerStarterKit {
         /// Determines if a circle intersects a rectangle.
         /// </summary>
         /// <returns>True if the circle and rectangle overlap. False otherwise.</returns>
-        public bool Intersects (Rectangle rectangle) {
+        public bool Intersects(Rectangle rectangle)
+        {
             Vector2 v = new Vector2(MathHelper.Clamp(Center.X, rectangle.Left, rectangle.Right),
                                     MathHelper.Clamp(Center.Y, rectangle.Top, rectangle.Bottom));
 

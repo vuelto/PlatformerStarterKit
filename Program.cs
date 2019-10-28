@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PlatformerStarterKit 
+namespace PlatformerStarterKit
 {
     public static class Program
     {

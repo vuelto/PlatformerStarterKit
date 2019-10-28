@@ -1,7 +1,8 @@
 using System;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PlatformerStarterKit {
+namespace PlatformerStarterKit
+{
     /// <summary>
     /// Represents an animated texture.
     /// </summary>
@@ -10,11 +11,13 @@ namespace PlatformerStarterKit {
     /// as wide as each animation is tall. The number of frames in the
     /// animation are inferred from this.
     /// </remarks>
-    class Animation {
+    public class Animation
+    {
         /// <summary>
         /// All frames in the animation arranged horizontally.
         /// </summary>
-        public Texture2D Texture {
+        public Texture2D Texture
+        {
             get { return texture; }
         }
         Texture2D texture;
@@ -22,7 +25,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Duration of time to show each frame.
         /// </summary>
-        public float FrameTime {
+        public float FrameTime
+        {
             get { return frameTime; }
         }
         float frameTime;
@@ -31,7 +35,8 @@ namespace PlatformerStarterKit {
         /// When the end of the animation is reached, should it
         /// continue playing from the beginning?
         /// </summary>
-        public bool IsLooping {
+        public bool IsLooping
+        {
             get { return isLooping; }
         }
         bool isLooping;
@@ -39,14 +44,16 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Gets the number of frames in the animation.
         /// </summary>
-        public int FrameCount {
+        public int FrameCount
+        {
             get { return Texture.Width / FrameWidth; }
         }
 
         /// <summary>
         /// Gets the width of a frame in the animation.
         /// </summary>
-        public int FrameWidth {
+        public int FrameWidth
+        {
             // Assume square frames.
             get { return Texture.Height; }
         }
@@ -54,14 +61,16 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Gets the height of a frame in the animation.
         /// </summary>
-        public int FrameHeight {
+        public int FrameHeight
+        {
             get { return Texture.Height; }
         }
 
         /// <summary>
         /// Constructors a new animation.
         /// </summary>        
-        public Animation (Texture2D texture, float frameTime, bool isLooping) {
+        public Animation(Texture2D texture, float frameTime, bool isLooping)
+        {
             this.texture = texture;
             this.frameTime = frameTime;
             this.isLooping = isLooping;

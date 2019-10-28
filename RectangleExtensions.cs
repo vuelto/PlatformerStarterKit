@@ -1,11 +1,13 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace PlatformerStarterKit {
+namespace PlatformerStarterKit
+{
     /// <summary>
     /// A set of helpful methods for working with rectangles.
     /// </summary>
-    public static class RectangleExtensions {
+    public static class RectangleExtensions
+    {
         /// <summary>
         /// Calculates the signed depth of intersection between two rectangles.
         /// </summary>
@@ -16,7 +18,8 @@ namespace PlatformerStarterKit {
         /// to push objects in order to resolve collisions.
         /// If the rectangles are not intersecting, Vector2.Zero is returned.
         /// </returns>
-        public static Vector2 GetIntersectionDepth (this Rectangle rectA, Rectangle rectB) {
+        public static Vector2 GetIntersectionDepth(this Rectangle rectA, Rectangle rectB)
+        {
             // Calculate half sizes.
             float halfWidthA = rectA.Width / 2.0f;
             float halfHeightA = rectA.Height / 2.0f;
@@ -46,7 +49,8 @@ namespace PlatformerStarterKit {
         /// <summary>
         /// Gets the position of the center of the bottom edge of the rectangle.
         /// </summary>
-        public static Vector2 GetBottomCenter (this Rectangle rect) {
+        public static Vector2 GetBottomCenter(this Rectangle rect)
+        {
             return new Vector2(rect.X + rect.Width / 2.0f, rect.Bottom);
         }
     }
